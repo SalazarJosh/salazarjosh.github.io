@@ -1,4 +1,5 @@
 module.exports = {
+  pathPrefix: '/Joshua-Salazar-Portfolio',
   siteMetadata: {
     title: 'Joshua Salazar Blog',
     description:
