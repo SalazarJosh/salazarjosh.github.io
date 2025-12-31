@@ -201,9 +201,7 @@ export const pageQuery = graphql `
         title
         image {
           childImageSharp {
-            fluid(maxWidth: 2048, quality: 100) {
-              ...GatsbyImageSharpFluid
-            }
+            gatsbyImageData(width: 2048, quality: 100)
           }
         }
         heading
@@ -217,9 +215,7 @@ export const pageQuery = graphql `
           blurbs {
             image {
               childImageSharp {
-                fluid(maxWidth: 240, quality: 64) {
-                  ...GatsbyImageSharpFluid
-                }
+                gatsbyImageData(width: 240, quality: 64)
               }
             }
             text

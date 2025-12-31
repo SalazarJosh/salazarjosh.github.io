@@ -102,9 +102,7 @@ export default () => (
                 listed
                 featuredimage {
                   childImageSharp {
-                    fluid(maxWidth: 500, quality: 100) {
-                      ...GatsbyImageSharpFluid
-                    }
+                    gatsbyImageData(width: 500, quality: 100)
                   }
                 }
               }
