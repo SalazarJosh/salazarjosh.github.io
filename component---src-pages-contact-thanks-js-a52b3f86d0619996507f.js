@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkgatsby_starter_netlify_cms=self.webpackChunkgatsby_starter_netlify_cms||[]).push([[957],{5439:function(e,t,s){s.r(t);var a=s(6540),n=s(5519);t.default=()=>a.createElement(n.A,null,a.createElement("section",{className:"section"},a.createElement("div",{className:"container"},a.createElement("div",{className:"content"},a.createElement("h1",null,"Thank you!"),a.createElement("p",null,"This is a custom thank you page for form submissions")))))}}]);
+//# sourceMappingURL=component---src-pages-contact-thanks-js-a52b3f86d0619996507f.js.map
