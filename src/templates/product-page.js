@@ -23,7 +23,7 @@ export const ProductPageTemplate = ({
       className="full-width-image-container margin-top-0"
       style={{
         backgroundImage: `url(${
-          !!image.childImageSharp ? image.childImageSharp.gatsbyImageData.images.fallback.src : image
+          !!image?.childImageSharp ? image.childImageSharp.gatsbyImageData.images.fallback.src : image || ""
         })`,
       }}
     >
@@ -85,9 +85,9 @@ export const ProductPageTemplate = ({
                 className="full-width-image-container"
                 style={{
                   backgroundImage: `url(${
-                    fullImage.childImageSharp
+                    fullImage?.childImageSharp
                       ? fullImage.childImageSharp.gatsbyImageData.images.fallback.src
-                      : fullImage
+                      : fullImage || ""
                   })`,
                 }}
               />

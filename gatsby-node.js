@@ -2,6 +2,44 @@ const _ = require('lodash')
 const path = require('path')
 const { createFilePath } = require('gatsby-source-filesystem')
 
+exports.createSchemaCustomization = ({ actions }) => {
+  const { createTypes } = actions
+
+  createTypes(`
+    type MarkdownRemarkFrontmatter {
+      image: File @fileByRelativePath
+      featuredimage: File @fileByRelativePath
+      full_image: File @fileByRelativePath
+    }
+
+    type MarkdownRemarkFrontmatterIntro {
+      blurbs: [MarkdownRemarkFrontmatterIntroBlurbs]
+    }
+
+    type MarkdownRemarkFrontmatterIntroBlurbs {
+      image: File @fileByRelativePath
+    }
+
+    type MarkdownRemarkFrontmatterMain {
+      image1: MarkdownRemarkFrontmatterMainImage1
+      image2: MarkdownRemarkFrontmatterMainImage2
+      image3: MarkdownRemarkFrontmatterMainImage3
+    }
+
+    type MarkdownRemarkFrontmatterMainImage1 {
+      image: File @fileByRelativePath
+    }
+
+    type MarkdownRemarkFrontmatterMainImage2 {
+      image: File @fileByRelativePath
+    }
+
+    type MarkdownRemarkFrontmatterMainImage3 {
+      image: File @fileByRelativePath
+    }
+  `)
+}
+
 exports.createPages = ({ actions, graphql }) => {
   const { createPage } = actions
 

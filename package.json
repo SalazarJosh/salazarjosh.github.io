@@ -57,6 +57,8 @@
     "deploy": "gatsby build --prefix-paths && gh-pages -d public"
   },
   "devDependencies": {
+    "@babel/core": "^7.28.5",
+    "@babel/preset-env": "^7.28.5",
     "gh-pages": "^6.3.0",
     "prettier": "^2.8.8"
   }
