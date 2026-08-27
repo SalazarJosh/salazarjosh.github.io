@@ -1,0 +1,617 @@
+---
+// Interactive hero: a live demo of design tokens driving accessibility preferences.
+---
+
+<section
+	class="stage"
+	id="hero-stage"
+	data-contrast="off"
+	data-motion="normal"
+	data-textsize="normal"
+	data-dyslexia="off"
+>
+	<div class="hero-copy">
+		<p class="eyebrow">hi, I'm Josh</p>
+
+		<h1 class="headline">
+			I'm an <span class="kw">artist</span> for everyone, and my medium is <span class="code">‹code/›</span>.
+		</h1>
+
+		<p class="sub">
+			I design things, build things, and try to make sure everyone can actually use the things. Somewhere along the way I also started talking about it on stages at conferences, which still feels a little wild. Mostly I just like making the internet a friendlier, more delightful place, one component at a time.
+			<br /><br />
+			<small>Make sure to say hi to the monsters.</small>
+		</p>
+
+		
+
+		<div class="accessibility-lens">
+			<span class="lens-label">Try the accessibility lens:</span>
+			<div class="switch-row" role="group" aria-label="Accessibility preview controls">
+				<div class="switch-item">
+					<span>High contrast</span>
+					<button
+						class="switch"
+						id="sw-contrast"
+						role="switch"
+						aria-checked="false"
+						aria-label="Toggle high contrast"></button>
+				</div>
+				<div class="switch-item">
+					<span>Reduce motion</span>
+					<button
+						class="switch"
+						id="sw-motion"
+						role="switch"
+						aria-checked="false"
+						aria-label="Toggle reduced motion"></button>
+				</div>
+				<div class="switch-item">
+					<span>Larger text</span>
+					<button
+						class="switch"
+						id="sw-textsize"
+						role="switch"
+						aria-checked="false"
+						aria-label="Toggle larger text"></button>
+				</div>
+				<div class="switch-item">
+					<span>Dyslexia-friendly spacing</span>
+					<button
+						class="switch"
+						id="sw-dyslexia"
+						role="switch"
+						aria-checked="false"
+						aria-label="Toggle dyslexia-friendly spacing"></button>
+				</div>
+				<div class="switch-item">
+					<span>Colorblind simulation</span>
+					<button
+						class="switch"
+						id="sw-colorblind"
+						role="switch"
+						aria-checked="false"
+						aria-label="Toggle colorblind simulation"></button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="monster-col">
+		<div class="monster-stage">
+			<div class="monster" id="monster">
+				<div class="antenna left"></div>
+				<div class="antenna right"></div>
+				<span class="zzz" aria-hidden="true">z Z z</span>
+				<div class="body">
+					<div class="eye left"><div class="pupil"></div></div>
+					<div class="eye right"><div class="pupil"></div></div>
+					<div class="cheek left"></div>
+					<div class="cheek right"></div>
+					<div class="mouth"></div>
+					<div class="sunglasses">
+						<div class="lens">
+							<div class="lens-glare"></div>
+						</div>
+						<div class="bridge"></div>
+						<div class="lens">
+							<div class="lens-glare"></div>
+						</div>
+					</div>
+				</div>
+				<div class="legs"><div class="leg"></div><div class="leg"></div></div>
+			</div>
+		</div>
+		<p class="shadow" aria-hidden="true"></p>
+		<p class="monster-caption" id="monster-caption" aria-live="polite">
+			Built entirely out of CSS divs. Say hi.
+		</p>
+	</div>
+</section>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+	<filter id="deuteranopia">
+		<feColorMatrix
+			type="matrix"
+			values="
+      0.625 0.375 0     0 0
+      0.7   0.3   0     0 0
+      0     0.3   0.7   0 0
+      0     0     0     1 0"></feColorMatrix>
+	</filter>
+</svg>
+
+<style>
+	.stage {
+		--scale: 1;
+		background: var(--paper-dim);
+		border: 1px solid var(--rule);
+		border-radius: 16px;
+		padding: 2.75rem 2.5rem;
+		display: grid;
+		grid-template-columns: 1.1fr 0.9fr;
+		gap: 2.5rem;
+		align-items: center;
+		transition:
+			border-color 0.2s ease,
+			background 0.2s ease;
+		filter: none;
+	}
+	.stage.colorblind {
+		filter: url(#deuteranopia);
+	}
+	.stage[data-contrast='on'] {
+		--paper-dim: #ffffff;
+		--ink: #000000;
+		--ink-soft: #000000;
+		--accent-blue: #0033cc;
+		--rule: #000000;
+		border-width: 3px;
+	}
+	.stage[data-contrast='on'] .switch {
+		border: 2px solid var(--ink);
+	}
+	.stage[data-contrast='on'] .headline .kw {
+		background: linear-gradient(transparent 55%, rgba(0, 51, 204, 0.35) 55%);
+	}
+	.stage[data-motion='reduced'] .monster,
+	.stage[data-motion='reduced'] .antenna,
+	.stage[data-motion='reduced'] .eye {
+		animation-play-state: paused;
+	}
+	.stage[data-motion='reduced'] * {
+		transition-duration: 0.001ms !important;
+	}
+	.stage[data-textsize='large'] {
+		--scale: 1.22;
+	}
+	.stage[data-textsize='large'] .monster-stage {
+		transform: scale(1.15);
+	}
+	.stage[data-dyslexia='on'] .headline,
+	.stage[data-dyslexia='on'] .sub {
+		letter-spacing: 0.035em;
+		word-spacing: 0.12em;
+		line-height: 1.35;
+	}
+
+	.eyebrow {
+		font-family: var(--font-mono);
+		font-size: calc(0.82rem * var(--scale));
+		color: var(--accent-blue);
+		margin: 0 0 1.1rem;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.headline {
+		font-family: var(--font-atkinson);
+		font-size: calc(2.85rem * var(--scale));
+		line-height: 1.1;
+		font-weight: 800;
+		letter-spacing: -0.015em;
+		margin: 0 0 1.4rem;
+		max-width: 15ch;
+		color: var(--ink);
+	}
+	
+	.headline .kw {
+		font-family: var(--font-mono);
+		font-weight: 500;
+		font-size: 0.62em;
+		background: linear-gradient(transparent 62%, rgba(52, 87, 213, 0.22) 62%);
+		padding: 0 0.15em;
+		vertical-align: 0.12em;
+		letter-spacing: 0;
+	}
+
+	.headline .code {
+		color: white;
+		border-radius: 4px;
+		font-family: var(--font-mono);
+		font-weight: 500;
+		font-size: 0.62em;
+		background: rgb(33, 33, 33);
+		padding: 0 0.15em;
+		vertical-align: 0.12em;
+		letter-spacing: 0;
+	}
+
+
+
+	.sub {
+		font-family: var(--font-atkinson);
+		font-size: calc(1.08rem * var(--scale));
+		color: var(--ink-soft);
+		max-width: 46ch;
+		line-height: 1.6;
+		margin: 0 0 1.75rem;
+	}
+
+	.roles {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.6rem;
+		margin-bottom: 2.25rem;
+	}
+	.role-chip {
+		font-family: var(--font-mono);
+		font-size: 0.78rem;
+		padding: 0.4rem 0.75rem;
+		border: 1px solid var(--rule);
+		border-radius: 999px;
+		color: var(--ink-soft);
+	}
+
+	.accessibility-lens {
+		border-top: 1px solid var(--rule);
+		padding-top: 1.6rem;
+	}
+
+	.lens-label {
+		font-family: var(--font-mono);
+		font-size: 0.85rem;
+		color: var(--ink-soft);
+		margin-bottom: 1rem;
+		display: block;
+	}
+
+	.switch-row {
+		display: flex;
+		flex-direction: column;
+		gap: 0.85rem;
+		max-width: 360px;
+	}
+
+	.switch-item {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+	}
+	.switch-item span {
+		font-family: var(--font-atkinson);
+		font-size: 0.95rem;
+		font-weight: 600;
+		color: var(--ink);
+	}
+	.switch {
+		width: 44px;
+		height: 26px;
+		border-radius: 999px;
+		background: var(--rule);
+		position: relative;
+		border: none;
+		cursor: pointer;
+		flex: none;
+		padding: 0;
+	}
+	.switch::after {
+		content: '';
+		position: absolute;
+		top: 3px;
+		left: 3px;
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		background: #fff;
+		transition: transform 0.2s ease;
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+	}
+	.switch[aria-checked='true'] {
+		background: var(--accent-teal);
+	}
+	.switch[aria-checked='true']::after {
+		transform: translateX(18px);
+	}
+	.switch:focus-visible {
+		outline: 3px solid var(--accent-blue);
+		outline-offset: 2px;
+	}
+
+	/* ---- monster ---- */
+	.monster-col {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	.monster-stage {
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		transition: transform 0.2s ease;
+	}
+	.monster {
+		position: relative;
+		width: 170px;
+		height: 170px;
+		animation: bob 2s ease-in-out infinite;
+	}
+	@keyframes bob {
+		0%,
+		100% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(-10px);
+		}
+	}
+	.antenna {
+		position: absolute;
+		top: -16px;
+		width: 4px;
+		height: 26px;
+		background: var(--ink);
+		border-radius: 2px;
+		transform-origin: bottom center;
+	}
+	.antenna::after {
+		content: '';
+		position: absolute;
+		top: -9px;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 11px;
+		height: 11px;
+		border-radius: 50%;
+		background: var(--accent-amber);
+	}
+	.antenna.left {
+		left: 46px;
+		animation: sway-left 1.4s ease-in-out infinite;
+	}
+	.antenna.right {
+		right: 46px;
+		animation: sway-right 1.4s ease-in-out infinite;
+	}
+	@keyframes sway-left {
+		0%,
+		100% {
+			transform: rotate(-10deg);
+		}
+		50% {
+			transform: rotate(-2deg);
+		}
+	}
+	@keyframes sway-right {
+		0%,
+		100% {
+			transform: rotate(10deg);
+		}
+		50% {
+			transform: rotate(2deg);
+		}
+	}
+	.body {
+		width: 150px;
+		height: 128px;
+		margin: 22px auto 0;
+		background: var(--accent-teal);
+		border-radius: 58% 42% 45% 55% / 60% 55% 45% 40%;
+		border: 1px solid rgba(0, 0, 0, 0.5);
+		position: relative;
+	}
+	.eye {
+		border: 1px solid black;
+		width: 52px;
+		height: 52px;
+		background: #fff;
+		border-radius: 50%;
+		position: absolute;
+		top: 32px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		animation: blink 4.5s ease-in-out infinite;
+	}
+	@keyframes blink {
+		0%,
+		92%,
+		100% {
+			transform: scaleY(1);
+		}
+		96% {
+			transform: scaleY(0.1);
+		}
+	}
+	.eye.left {
+		left: 26px;
+	}
+	.eye.right {
+		right: 26px;
+	}
+	.pupil {
+		width: 13px;
+		height: 13px;
+		background: var(--ink);
+		border-radius: 50%;
+	}
+	.mouth {
+		width: 20px;
+		height: 10px;
+		border-radius: 0 0 18px 18px;
+		background: var(--ink);
+		position: absolute;
+		bottom: 22px;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+	.cheek {
+		width: 15px;
+		height: 9px;
+		background: rgba(232, 180, 0, 0.55);
+		border-radius: 50%;
+		position: absolute;
+		bottom: 32px;
+	}
+	.cheek.left {
+		left: 12px;
+	}
+	.cheek.right {
+		right: 12px;
+	}
+	.legs {
+		display: flex;
+		justify-content: center;
+		gap: 34px;
+		margin-top: -6px;
+	}
+	.leg {
+		width: 13px;
+		height: 20px;
+		background: var(--accent-teal);
+		border: 1px solid rgba(0, 0, 0, 0.5);
+		border-radius: 0 0 7px 7px;
+	}
+	.shadow {
+		width: 104px;
+		height: 13px;
+		background: rgba(27, 31, 35, 0.12);
+		border-radius: 50%;
+		margin: 8px auto 0;
+		filter: blur(2px);
+	}
+
+	.sunglasses {
+		position: absolute;
+		top: 38px;
+		left: 24px;
+		width: 104px;
+		height: 20px;
+		display: none;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.sunglasses .lens {
+		width: 45px;
+		height: 45px;
+		background: var(--ink);
+		border-radius: 50%;
+	}
+
+	.sunglasses .lens-glare {
+		width: 45px;
+		height: 45px;
+		background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
+		border-radius: 50%;
+	}
+
+	.sunglasses .bridge {
+		width: 15px;
+		height: 4px;
+		background: var(--ink);
+	}
+	.stage[data-contrast='on'] .sunglasses {
+		display: flex;
+	}
+
+	.zzz {
+		position: absolute;
+		top: -4px;
+		right: -6px;
+		font-family: var(--font-mono);
+		font-size: 0.9rem;
+		color: var(--ink-soft);
+		font-weight: 600;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+	}
+	.stage[data-motion='reduced'] .zzz {
+		opacity: 1;
+	}
+
+	.monster-caption {
+		font-family: var(--font-atkinson);
+		font-size: 0.85rem;
+		color: var(--ink-soft);
+		text-align: center;
+		margin-top: 1.1rem;
+		max-width: 26ch;
+		min-height: 2.6em;
+	}
+
+	@media (max-width: 800px) {
+		.stage {
+			grid-template-columns: 1fr;
+			padding: 2.25rem 1.6rem;
+		}
+		.monster-col {
+			order: -1;
+			margin-bottom: 0.5rem;
+		}
+		.headline {
+			font-size: calc(2.1rem * var(--scale));
+			max-width: none;
+		}
+	}
+	@media (max-width: 640px) {
+		.stage {
+			padding: 2rem 1.35rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.monster,
+		.antenna,
+		.eye {
+			animation: none;
+		}
+	}
+</style>
+
+<script>
+	// astro:page-load fires on first load AND after every ClientRouter swap, since the
+	// module script itself is only ever executed once and won't re-run when navigating back.
+	document.addEventListener('astro:page-load', initHero);
+
+	function initHero() {
+		const stage = document.getElementById('hero-stage');
+		const caption = document.getElementById('monster-caption');
+		if (!stage || !caption) return;
+
+		const state = {
+			contrast: false,
+			motion: false,
+			textsize: false,
+			dyslexia: false,
+			colorblind: false,
+		};
+
+		function updateCaption() {
+			if (!caption) return;
+			const msgs: string[] = [];
+			if (state.contrast) msgs.push('Sunglasses on — high contrast mode.');
+			if (state.motion) msgs.push('Holding still. Reduce motion means reduce motion.');
+			if (state.textsize) msgs.push('Bigger text, bigger monster. Seemed fair.');
+			if (state.dyslexia) msgs.push('Extra breathing room between letters and words.');
+			if (state.colorblind) msgs.push('This is roughly the palette for deuteranope.');
+			caption.innerHTML = msgs.length ? msgs.join(' ') : 'Say <strong>hi</strong> to the monster.';
+		}
+
+		function wire(id: string, key: keyof typeof state, applyFn: (on: boolean) => void) {
+			const btn = document.getElementById(id);
+			if (!btn) return;
+			btn.addEventListener('click', () => {
+				state[key] = !state[key];
+				btn.setAttribute('aria-checked', String(state[key]));
+				applyFn(state[key]);
+				updateCaption();
+			});
+		}
+
+		wire('sw-contrast', 'contrast', (on) => stage.setAttribute('data-contrast', on ? 'on' : 'off'));
+		wire('sw-motion', 'motion', (on) => stage.setAttribute('data-motion', on ? 'reduced' : 'normal'));
+		wire('sw-textsize', 'textsize', (on) => stage.setAttribute('data-textsize', on ? 'large' : 'normal'));
+		wire('sw-dyslexia', 'dyslexia', (on) => stage.setAttribute('data-dyslexia', on ? 'on' : 'off'));
+		wire('sw-colorblind', 'colorblind', (on) => stage.classList.toggle('colorblind', on));
+
+		// respect a real OS-level reduced motion preference on load
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			document.getElementById('sw-motion')?.dispatchEvent(new Event('click'));
+		}
+
+		updateCaption();
+	}
+</script>

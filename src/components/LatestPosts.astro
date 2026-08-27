@@ -1,0 +1,122 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import FormattedDate from './FormattedDate.astro';
+
+const posts = (await getCollection('blog'))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.slice(0, 3);
+---
+
+<section class="latest-posts">
+	<div class="section-head">
+		<h2>Latest from the blog</h2>
+		<a class="view-all" href="/blog/">View all posts →</a>
+	</div>
+
+	<ul>
+		{
+			posts.map((post) => (
+				<li>
+					<a href={`/blog/${post.id}/`}>
+						{post.data.heroImage && (
+							<Image width={360} height={202} src={post.data.heroImage} alt="" />
+						)}
+						<h3 class="title">{post.data.title}</h3>
+						<p class="description">{post.data.description}</p>
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</section>
+
+<style>
+	.latest-posts {
+		margin-top: 2.5rem;
+		padding-top: 2.5rem;
+		border-top: 1px solid var(--rule);
+	}
+
+	.section-head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-bottom: 1.5rem;
+	}
+
+	.section-head h2 {
+		font-size: 1.563rem;
+		color: var(--ink);
+		margin: 0;
+	}
+
+	.view-all {
+		font-family: var(--font-mono);
+		font-size: 0.85rem;
+		white-space: nowrap;
+		color: var(--accent-blue);
+		text-decoration: none;
+	}
+
+	.view-all:hover {
+		text-decoration: underline;
+	}
+
+	ul {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1.5rem;
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	li a {
+		display: block;
+		height: 100%;
+		text-decoration: none;
+		transition: 0.2s ease;
+	}
+
+	li img {
+		width: 100%;
+		aspect-ratio: 16 / 9;
+		object-fit: cover;
+		margin-bottom: 0.75rem;
+		border-radius: 10px;
+		border: 1px solid var(--rule);
+	}
+
+	.title {
+		margin: 0 0 0.25rem;
+		font-size: 1.1rem;
+		color: var(--ink);
+		line-height: 1.3;
+	}
+
+	.date {
+		margin: 0 0 0.5rem;
+		font-family: var(--font-mono);
+		font-size: 0.8rem;
+		color: var(--ink-soft);
+	}
+
+	.description {
+		margin: 0;
+		font-size: 0.95rem;
+		color: var(--ink-soft);
+		line-height: 1.5;
+	}
+
+	li a:hover .title {
+		color: var(--accent-blue);
+	}
+
+	@media (max-width: 720px) {
+		ul {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
