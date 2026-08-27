@@ -5,7 +5,7 @@ import HeaderLink from './HeaderLink.astro';
 
 <header>
 	<nav>
-		<h2><a href="/">{SITE_TITLE}</a></h2>
+		<h2><a href="/">thisjosh.codes</a></h2>
 		<div class="internal-links">
 			<HeaderLink href="/blog">$ cd <strong>blog</strong></HeaderLink>
 		</div>
@@ -69,8 +69,11 @@ import HeaderLink from './HeaderLink.astro';
 	nav {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
+		justify-content: flex-start;
 		gap: 1rem;
+	}
+	.social-links {
+		margin-left: auto;
 	}
 	nav a {
 		padding: 1rem 0.5rem;
