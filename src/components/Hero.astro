@@ -8,6 +8,7 @@ import PictureMonsters from "../components/monsters/PictureMonsters.astro";
 <section class="about-hero" aria-labelledby="about-heading">
 	<figure class="portrait">
 		<Image src={AboutHeroImage} alt="Portrait of Josh Salazar" />
+		<div class="portrait-flash" aria-hidden="true"></div>
 		<div class="picture-monster-container">
 			<PictureMonsters />
 		</div>
@@ -70,9 +71,9 @@ import PictureMonsters from "../components/monsters/PictureMonsters.astro";
 	.picture-monster-container{
 		position: absolute;
 		top: 112%;
-		right: 370px;
-		width: 100px;
-		height: 100px;
+		right: 270px;
+		width: 200px;
+		height: 200px;
 		z-index: 1000;
 		transform: translateY(-50%);
 		pointer-events: none;
@@ -119,8 +120,19 @@ import PictureMonsters from "../components/monsters/PictureMonsters.astro";
 		text-align: center;
 	}
 	.portrait img {
+		position: relative;
+		z-index: 1;
 		width: min(21rem, 100%);
 		height: auto;
+	}
+	.portrait-flash {
+		position: absolute;
+		z-index: 2;
+		inset: 0;
+		background: linear-gradient(45deg, rgba(255,255,255, 0.5), rgba(255,255,255,0));
+		border-radius: 50%;
+		opacity: 0;
+		pointer-events: none;
 	}
 	.eyebrow,
 	.section-label {
